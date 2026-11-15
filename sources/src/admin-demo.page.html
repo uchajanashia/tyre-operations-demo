@@ -1,0 +1,759 @@
+<div class="demo-shell" [class.demo-shell--nav-open]="navOpen()">
+  <aside class="rail" id="demo-navigation" aria-label="დემო ნავიგაცია">
+    <div class="rail-head">
+      <div class="brand">
+        <span class="brand__mark">T</span>
+        <span><strong>tyre.ge</strong><small>OPS DEMO</small></span>
+      </div>
+      <button
+        type="button"
+        class="rail-close"
+        aria-label="ნავიგაციის დახურვა"
+        (click)="navOpen.set(false)"
+      >
+        ×
+      </button>
+    </div>
+
+    <nav>
+      <p class="rail-label">სამუშაო სივრცე</p>
+      @for (view of views; track view.id) {
+        <button
+          type="button"
+          [class.is-active]="activeView() === view.id"
+          [attr.aria-current]="activeView() === view.id ? 'page' : null"
+          (click)="selectView(view.id)"
+        >
+          <span class="nav-icon" aria-hidden="true">
+            @switch (view.id) {
+              @case ('overview') {
+                ◫
+              }
+              @case ('orders') {
+                ≡
+              }
+              @case ('payments') {
+                ₾
+              }
+              @case ('crm') {
+                ○
+              }
+              @case ('inventory') {
+                ⬡
+              }
+            }
+          </span>
+          <span>{{ view.label }}</span>
+          <small>{{ view.meta }}</small>
+        </button>
+      }
+    </nav>
+
+    <div class="rail-context">
+      <span class="presence"><i></i> დემო სესია</span>
+      <strong>მარიამ მ.</strong>
+      <small>ოპერაციების მენეჯერი</small>
+    </div>
+  </aside>
+
+  @if (navOpen()) {
+    <button
+      type="button"
+      class="nav-scrim"
+      aria-label="მენიუს დახურვა"
+      (click)="navOpen.set(false)"
+    ></button>
+  }
+
+  <main>
+    <div class="demo-banner" role="status">
+      <strong>DEMO • სინთეტიკური მონაცემები</strong>
+      <span>ლოკალური ინტერაქტიული პროტოტიპი · ცვლილებები არ ინახება</span>
+    </div>
+
+    <header class="topbar">
+      <button
+        type="button"
+        class="menu-button"
+        aria-controls="demo-navigation"
+        [attr.aria-expanded]="navOpen()"
+        [attr.aria-label]="navOpen() ? 'ნავიგაციის დახურვა' : 'ნავიგაციის გახსნა'"
+        (click)="toggleNav()"
+      >
+        ☰
+      </button>
+      <div class="breadcrumb"><span>OPS</span><b>/</b>{{ activeLabel() }}</div>
+      <div class="topbar-actions">
+        <button type="button" class="icon-button" aria-label="დემო შეტყობინებები">⌁<i>3</i></button>
+        <span class="today">31 ივლისი · 14:45</span>
+        <span class="avatar">მმ</span>
+      </div>
+    </header>
+
+    <div class="workspace">
+      @switch (activeView()) {
+        @case ('overview') {
+          <section class="view" aria-labelledby="overview-title">
+            <div class="page-heading">
+              <div>
+                <p class="eyebrow">ოპერაციების ცენტრი · პარასკევი</p>
+                <h1 id="overview-title">დღის სურათი</h1>
+                <p>გადაწყვეტილებები, გამონაკლისები და ნაკადის მდგომარეობა ერთ სამუშაო ხედში.</p>
+              </div>
+              <button type="button" class="secondary-action" (click)="selectView('orders')">
+                შეკვეთების რიგი <span>→</span>
+              </button>
+            </div>
+
+            <div class="metric-strip" aria-label="დღის მაჩვენებლები">
+              <div>
+                <span>დღის ბრუნვა</span><strong>₾ 48,620</strong><small>+8.4% გეგმის მიმართ</small>
+              </div>
+              <div>
+                <span>აქტიური შეკვეთები</span><strong>42</strong><small>12 ითხოვს ყურადღებას</small>
+              </div>
+              <div>
+                <span>გადასამოწმებელი</span><strong>04</strong><small>₾ 13,960 ჯამში</small>
+              </div>
+              <div><span>დაბალი მარაგი</span><strong>07</strong><small>3 კრიტიკული SKU</small></div>
+            </div>
+
+            <div class="overview-grid">
+              <section class="surface flow-panel" aria-labelledby="flow-title">
+                <div class="section-heading">
+                  <div>
+                    <p>დღევანდელი ნაკადი</p>
+                    <h2 id="flow-title">შეკვეთების პულსი</h2>
+                  </div>
+                  <span>განახლება · დემო 14:45</span>
+                </div>
+                <div class="flow-chart" aria-label="საათობრივი შეკვეთების სინთეტიკური გრაფიკი">
+                  @for (height of [38, 52, 46, 70, 61, 88, 76, 64, 81, 58]; track $index) {
+                    <i [style.height.%]="height"
+                      ><span>{{ height }}</span></i
+                    >
+                  }
+                </div>
+                <div class="chart-axis">
+                  <span>09:00</span><span>12:00</span><span>15:00</span><span>18:00</span>
+                </div>
+              </section>
+
+              <section class="surface attention-panel" aria-labelledby="attention-title">
+                <div class="section-heading">
+                  <div>
+                    <p>პრიორიტეტი</p>
+                    <h2 id="attention-title">მოქმედებას ითხოვს</h2>
+                  </div>
+                  <strong>6</strong>
+                </div>
+                <button type="button" (click)="selectView('payments')">
+                  <i></i
+                  ><span><strong>2 გადახდა</strong><small>დადასტურების SLA · 18 წთ</small></span
+                  ><b>→</b>
+                </button>
+                <button type="button" (click)="selectView('inventory')">
+                  <i></i
+                  ><span
+                    ><strong>3 კრიტიკული SKU</strong><small>ხელმისაწვდომი მარაგი ≤ 4</small></span
+                  ><b>→</b>
+                </button>
+                <button type="button" (click)="selectView('orders')">
+                  <i></i
+                  ><span
+                    ><strong>1 შეკვეთის გამონაკლისი</strong><small>ფასდაკლების პირობა</small></span
+                  ><b>→</b>
+                </button>
+              </section>
+            </div>
+
+            <section class="surface queue-preview" aria-labelledby="queue-title">
+              <div class="section-heading">
+                <div>
+                  <p>ცოცხალი რიგი · სინთეტიკური</p>
+                  <h2 id="queue-title">ბოლო ოპერაციები</h2>
+                </div>
+                <button type="button" class="text-action" (click)="selectView('orders')">
+                  ყველას ნახვა →
+                </button>
+              </div>
+              <div class="table-scroll">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>შეკვეთა</th>
+                      <th>კლიენტი</th>
+                      <th>ავტომობილი</th>
+                      <th>სტატუსი</th>
+                      <th class="num">ჯამი</th>
+                      <th>ასაკი</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @for (order of orders.slice(0, 3); track order.id) {
+                      <tr>
+                        <td>
+                          <button
+                            type="button"
+                            class="row-link"
+                            (click)="selectedOrderId.set(order.id); selectView('orders')"
+                          >
+                            {{ order.id }}
+                          </button>
+                        </td>
+                        <td>
+                          <strong>{{ order.customer }}</strong
+                          ><small>{{ order.channel }}</small>
+                        </td>
+                        <td>{{ order.vehicle }}</td>
+                        <td>
+                          <span class="status">{{ order.status }}</span>
+                        </td>
+                        <td class="num">{{ order.total }}</td>
+                        <td>{{ order.age }}</td>
+                      </tr>
+                    }
+                  </tbody>
+                </table>
+              </div>
+            </section>
+          </section>
+        }
+
+        @case ('orders') {
+          <section class="view" aria-labelledby="orders-title">
+            <div class="page-heading compact">
+              <div>
+                <p class="eyebrow">შეკვეთების ოპერაციები</p>
+                <h1 id="orders-title">შეკვეთების რიგი</h1>
+                <p>შეარჩიეთ ჩანაწერი და გადაამოწმეთ შესრულების სრული გზა.</p>
+              </div>
+              <div class="heading-stat">
+                <span>ღია შეკვეთები</span><strong>12</strong><small>4 სინთეტიკური ჩანს</small>
+              </div>
+            </div>
+            <div class="toolbar">
+              <label class="search"
+                ><span>⌕</span
+                ><input
+                  type="search"
+                  aria-label="შეკვეთების ძიება"
+                  placeholder="ID, კლიენტი ან ავტომობილი"
+                  [ngModel]="query()"
+                  (ngModelChange)="query.set($event)"
+              /></label>
+              <label class="select-wrap"
+                ><span>სტატუსი</span
+                ><select [ngModel]="orderFilter()" (ngModelChange)="orderFilter.set($event)">
+                  <option>ყველა</option>
+                  <option>ახალი</option>
+                  <option>გადამოწმება</option>
+                  <option>შეფუთვის რიგში</option>
+                  <option>კურიერთან</option>
+                </select></label
+              >
+              <span class="result-count">{{ filteredOrders().length }} ჩანაწერი</span>
+            </div>
+            <div class="master-detail">
+              <section class="surface master-list" aria-label="შეკვეთების სია">
+                <div class="table-scroll">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>შეკვეთა / კლიენტი</th>
+                        <th>სტატუსი</th>
+                        <th class="num">ჯამი</th>
+                        <th>ასაკი</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      @for (order of filteredOrders(); track order.id) {
+                        <tr
+                          [class.is-selected]="selectedOrderId() === order.id"
+                          (click)="selectedOrderId.set(order.id)"
+                        >
+                          <td>
+                            <button
+                              type="button"
+                              class="record-button"
+                              (click)="selectedOrderId.set(order.id)"
+                            >
+                              <strong>{{ order.id }}</strong
+                              ><span>{{ order.customer }}</span
+                              ><small>{{ order.vehicle }}</small>
+                            </button>
+                          </td>
+                          <td>
+                            <span class="status">{{ order.status }}</span>
+                          </td>
+                          <td class="num">
+                            <strong>{{ order.total }}</strong>
+                          </td>
+                          <td>{{ order.age }}</td>
+                        </tr>
+                      } @empty {
+                        <tr>
+                          <td colspan="4" class="empty">შესაბამისი დემო-შეკვეთა ვერ მოიძებნა.</td>
+                        </tr>
+                      }
+                    </tbody>
+                  </table>
+                </div>
+              </section>
+              @if (selectedOrder(); as order) {
+                <aside class="surface detail-pane" aria-label="შეკვეთის დეტალი">
+                  <div class="detail-top">
+                    <div>
+                      <p>{{ order.id }}</p>
+                      <h2>{{ order.customer }}</h2>
+                    </div>
+                    <span class="status">{{ order.status }}</span>
+                  </div>
+                  <dl class="detail-facts">
+                    <div>
+                      <dt>არხი</dt>
+                      <dd>{{ order.channel }}</dd>
+                    </div>
+                    <div>
+                      <dt>ჯამი</dt>
+                      <dd>{{ order.total }}</dd>
+                    </div>
+                    <div>
+                      <dt>ავტომობილი</dt>
+                      <dd>{{ order.vehicle }}</dd>
+                    </div>
+                    <div>
+                      <dt>მიტანა</dt>
+                      <dd>{{ order.address }}</dd>
+                    </div>
+                  </dl>
+                  <div class="detail-block">
+                    <h3>შემადგენლობა</h3>
+                    @for (item of order.items; track item) {
+                      <p class="line-item">
+                        <span>{{ item }}</span
+                        ><b>✓</b>
+                      </p>
+                    }
+                  </div>
+                  <div class="detail-block">
+                    <h3>ოპერაციის ქრონოლოგია</h3>
+                    <ol class="timeline">
+                      @for (event of order.timeline; track event.time + event.title) {
+                        <li>
+                          <time>{{ event.time }}</time
+                          ><span
+                            ><strong>{{ event.title }}</strong
+                            ><small>{{ event.note }}</small></span
+                          >
+                        </li>
+                      }
+                    </ol>
+                  </div>
+                  <div class="detail-actions">
+                    <button
+                      type="button"
+                      class="primary-action"
+                      (click)="toast.set(order.id + ' — დემო დავალება მონიშნულია')"
+                    >
+                      შემდეგ ეტაპზე გადაყვანა</button
+                    ><button
+                      type="button"
+                      class="secondary-action"
+                      (click)="toast.set('დემო დოკუმენტი არ იქმნება')"
+                    >
+                      დოკუმენტი
+                    </button>
+                  </div>
+                </aside>
+              }
+            </div>
+          </section>
+        }
+
+        @case ('payments') {
+          <section class="view" aria-labelledby="payments-title">
+            <div class="page-heading compact">
+              <div>
+                <p class="eyebrow">ფინანსური კონტროლი · დემო</p>
+                <h1 id="payments-title">გადახდების გადამოწმება</h1>
+                <p>დაადასტურეთ მხოლოდ სინთეტიკური ტრანზაქციის ჩანაწერები.</p>
+              </div>
+              <div class="heading-stat">
+                <span>რიგის ღირებულება</span><strong>₾ 13,960</strong><small>4 დემო ჩანაწერი</small>
+              </div>
+            </div>
+            <div class="payments-layout">
+              <section class="surface payment-list" aria-label="გადასამოწმებელი გადახდები">
+                <div class="list-caption">
+                  <span>გადასამოწმებელი რიგი</span><small>SLA: 30 წუთი</small>
+                </div>
+                @for (payment of payments; track payment.id) {
+                  <button
+                    type="button"
+                    [class.is-selected]="selectedPaymentId() === payment.id"
+                    (click)="selectedPaymentId.set(payment.id)"
+                  >
+                    <span class="payment-main"
+                      ><strong>{{ payment.customer }}</strong
+                      ><small>{{ payment.id }} · {{ payment.method }}</small></span
+                    >
+                    <span class="payment-value"
+                      ><strong>{{ payment.amount }}</strong
+                      ><small>{{ payment.submitted }}</small></span
+                    >
+                    <span
+                      class="status"
+                      [class.status--done]="paymentStatus(payment.id) !== 'დასამტკიცებელი'"
+                      >{{ paymentStatus(payment.id) }}</span
+                    >
+                  </button>
+                }
+              </section>
+              @if (selectedPayment(); as payment) {
+                <aside class="surface detail-pane payment-detail" aria-label="გადახდის დეტალი">
+                  <div class="detail-top">
+                    <div>
+                      <p>{{ payment.id }}</p>
+                      <h2>{{ payment.amount }}</h2>
+                    </div>
+                    <span class="status">{{ paymentStatus(payment.id) }}</span>
+                  </div>
+                  <div class="verification">
+                    <span>ავტომატური დემო-სიგნალი</span><strong>✓ {{ payment.signal }}</strong
+                    ><small>ეს შეფასება სინთეტიკურ წესებს ეყრდნობა.</small>
+                  </div>
+                  <dl class="detail-facts">
+                    <div>
+                      <dt>გადამხდელი</dt>
+                      <dd>{{ payment.customer }}</dd>
+                    </div>
+                    <div>
+                      <dt>მეთოდი</dt>
+                      <dd>{{ payment.method }}</dd>
+                    </div>
+                    <div>
+                      <dt>მიღებულია</dt>
+                      <dd>31 ივლ · {{ payment.submitted }}</dd>
+                    </div>
+                    <div>
+                      <dt>რეფერენსი</dt>
+                      <dd>DEMO-REF-0042</dd>
+                    </div>
+                  </dl>
+                  <div class="audit-note">
+                    <span>i</span>
+                    <p>
+                      <strong>დემო მოქმედება</strong> არჩევანი მხოლოდ ამ ეკრანზე შეიცვლება და არსად
+                      გადაიგზავნება.
+                    </p>
+                  </div>
+                  <div class="decision-actions">
+                    <button
+                      type="button"
+                      class="reject-action"
+                      [disabled]="paymentStatus(payment.id) !== 'დასამტკიცებელი'"
+                      (click)="openDecision(payment.id, 'reject')"
+                    >
+                      უარყოფა</button
+                    ><button
+                      type="button"
+                      class="primary-action"
+                      [disabled]="paymentStatus(payment.id) !== 'დასამტკიცებელი'"
+                      (click)="openDecision(payment.id, 'approve')"
+                    >
+                      დამტკიცება
+                    </button>
+                  </div>
+                </aside>
+              }
+            </div>
+          </section>
+        }
+
+        @case ('crm') {
+          <section class="view" aria-labelledby="crm-title">
+            <div class="page-heading compact">
+              <div>
+                <p class="eyebrow">Customer 360 · დემო</p>
+                <h1 id="crm-title">კლიენტების სივრცე</h1>
+                <p>ურთიერთობა, ავტომობილი და შეკვეთების ისტორია ერთ კონტექსტში.</p>
+              </div>
+              <div class="heading-stat">
+                <span>აქტიური პროფილები</span><strong>248</strong
+                ><small>სინთეტიკური მაჩვენებელი</small>
+              </div>
+            </div>
+            <div class="toolbar">
+              <label class="search"
+                ><span>⌕</span
+                ><input
+                  type="search"
+                  aria-label="კლიენტების ძიება"
+                  placeholder="სახელი, ID ან ავტომობილი"
+                  [ngModel]="query()"
+                  (ngModelChange)="query.set($event)" /></label
+              ><span class="result-count">{{ filteredCustomers().length }} ჩანაწერი</span>
+            </div>
+            <div class="crm-layout">
+              <section class="surface customer-list" aria-label="კლიენტების სია">
+                @for (customer of filteredCustomers(); track customer.id) {
+                  <button
+                    type="button"
+                    [class.is-selected]="selectedCustomerId() === customer.id"
+                    (click)="selectedCustomerId.set(customer.id)"
+                  >
+                    <span class="customer-avatar">{{ customer.name.slice(7, 9) }}</span
+                    ><span
+                      ><strong>{{ customer.name }}</strong
+                      ><small>{{ customer.id }} · {{ customer.vehicle }}</small></span
+                    ><em>{{ customer.segment }}</em>
+                  </button>
+                } @empty {
+                  <p class="empty">შესაბამისი დემო-კლიენტი ვერ მოიძებნა.</p>
+                }
+              </section>
+              @if (selectedCustomer(); as customer) {
+                <aside class="surface customer-360" aria-label="კლიენტის 360 გრადუსიანი პროფილი">
+                  <div class="customer-hero">
+                    <span class="customer-avatar large">{{ customer.name.slice(7, 9) }}</span>
+                    <div>
+                      <p>{{ customer.id }} · {{ customer.segment }}</p>
+                      <h2>{{ customer.name }}</h2>
+                      <small>{{ customer.contact }}</small>
+                    </div>
+                    <button
+                      type="button"
+                      class="secondary-action"
+                      (click)="toast.set('დემო ჩანაწერი: კონტაქტი არ იგზავნება')"
+                    >
+                      დაკავშირება
+                    </button>
+                  </div>
+                  <div class="customer-metrics">
+                    <div>
+                      <span>შეკვეთები</span><strong>{{ customer.orders }}</strong>
+                    </div>
+                    <div>
+                      <span>სრული ღირებულება</span><strong>{{ customer.value }}</strong>
+                    </div>
+                    <div>
+                      <span>ბოლო შეკვეთა</span><strong>{{ customer.lastOrder }}</strong>
+                    </div>
+                  </div>
+                  <div class="customer-columns">
+                    <div>
+                      <h3>ავტომობილი</h3>
+                      <strong>{{ customer.vehicle }}</strong>
+                      <p>შესაბამისობა გადამოწმებულია · დემო</p>
+                    </div>
+                    <div>
+                      <h3>ოპერატორის ჩანაწერი</h3>
+                      <p>{{ customer.note }}</p>
+                    </div>
+                  </div>
+                  <div class="recent-orders">
+                    <div class="section-heading">
+                      <div>
+                        <p>ისტორია</p>
+                        <h3>ბოლო ოპერაციები</h3>
+                      </div>
+                    </div>
+                    <p>
+                      <span>დღეს</span><strong>შეკვეთის შექმნა</strong
+                      ><small>{{ customer.value }} · სინთეტიკური</small>
+                    </p>
+                    <p>
+                      <span>12 ივლ</span><strong>ზომის კონსულტაცია</strong
+                      ><small>დემო კონტაქტი</small>
+                    </p>
+                  </div>
+                </aside>
+              }
+            </div>
+          </section>
+        }
+
+        @case ('inventory') {
+          <section class="view" aria-labelledby="inventory-title">
+            <div class="page-heading compact">
+              <div>
+                <p class="eyebrow">საწყობები · დემო</p>
+                <h1 id="inventory-title">მარაგის ჯანმრთელობა</h1>
+                <p>ხელმისაწვდომობა, რეზერვაციები და ბოლო მოძრაობები SKU დონეზე.</p>
+              </div>
+              <button
+                type="button"
+                class="secondary-action"
+                (click)="toast.set('დემო ექსპორტი არ ჩამოიტვირთება')"
+              >
+                ანგარიშის ექსპორტი
+              </button>
+            </div>
+            <div class="warehouse-strip">
+              <button type="button">
+                <span>თბილისი</span><strong>1,248 <small>ც.</small></strong
+                ><em>2 დაბალი SKU</em></button
+              ><button type="button">
+                <span>ქუთაისი</span><strong>684 <small>ც.</small></strong
+                ><em>3 დაბალი SKU</em></button
+              ><button type="button">
+                <span>ბათუმი</span><strong>392 <small>ც.</small></strong
+                ><em>2 დაბალი SKU</em>
+              </button>
+              <div>
+                <span>რეზერვში</span><strong>186 <small>ც.</small></strong
+                ><em>8.0% მთლიანი</em>
+              </div>
+            </div>
+            <div class="inventory-layout">
+              <section class="surface stock-table" aria-label="მარაგის ჩანაწერები">
+                <div class="table-scroll">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>პროდუქტი / SKU</th>
+                        <th>საწყობი</th>
+                        <th class="num">ხელმისაწ.</th>
+                        <th class="num">რეზერვი</th>
+                        <th>ჯანმრთელობა</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      @for (item of stock; track item.sku) {
+                        <tr
+                          [class.is-selected]="selectedStockSku() === item.sku"
+                          (click)="selectedStockSku.set(item.sku)"
+                        >
+                          <td>
+                            <button
+                              type="button"
+                              class="record-button"
+                              (click)="selectedStockSku.set(item.sku)"
+                            >
+                              <strong>{{ item.product }}</strong
+                              ><small>{{ item.sku }}</small>
+                            </button>
+                          </td>
+                          <td>{{ item.warehouse }}</td>
+                          <td class="num">
+                            <strong>{{ item.available }}</strong>
+                          </td>
+                          <td class="num">{{ item.reserved }}</td>
+                          <td>
+                            <span
+                              class="health"
+                              [class.health--low]="item.available <= item.threshold"
+                              ><i></i
+                              >{{ item.available <= item.threshold ? 'დაბალი' : 'ჯანსაღი' }}</span
+                            >
+                          </td>
+                        </tr>
+                      }
+                    </tbody>
+                  </table>
+                </div>
+              </section>
+              @if (selectedStock(); as item) {
+                <aside class="surface stock-detail" aria-label="მარაგის დეტალი">
+                  <div class="detail-top">
+                    <div>
+                      <p>{{ item.sku }}</p>
+                      <h2>{{ item.product }}</h2>
+                    </div>
+                    <span class="health" [class.health--low]="item.available <= item.threshold"
+                      ><i></i>{{ item.available <= item.threshold ? 'დაბალი' : 'ჯანსაღი' }}</span
+                    >
+                  </div>
+                  <div class="stock-gauge">
+                    <span>ხელმისაწვდომი</span
+                    ><strong>{{ item.available }} <small>ც.</small></strong>
+                    <div>
+                      <i
+                        [style.width.%]="item.available > 24 ? 100 : (item.available / 24) * 100"
+                      ></i>
+                    </div>
+                    <small>შევსების ზღვარი · {{ item.threshold }} ც.</small>
+                  </div>
+                  <dl class="detail-facts">
+                    <div>
+                      <dt>საწყობი</dt>
+                      <dd>{{ item.warehouse }}</dd>
+                    </div>
+                    <div>
+                      <dt>რეზერვში</dt>
+                      <dd>{{ item.reserved }} ც.</dd>
+                    </div>
+                    <div>
+                      <dt>ბოლო მოძრაობა</dt>
+                      <dd>{{ item.movement }}</dd>
+                    </div>
+                    <div>
+                      <dt>რეზერვაციის წყარო</dt>
+                      <dd>დემო შეკვეთები</dd>
+                    </div>
+                  </dl>
+                  <div class="detail-block">
+                    <h3>ბოლო მოძრაობები</h3>
+                    <ol class="timeline">
+                      <li>
+                        <time>14:26</time
+                        ><span
+                          ><strong>შეკვეთის რეზერვი</strong><small>ORD-1048 · −4 ც.</small></span
+                        >
+                      </li>
+                      <li>
+                        <time>11:42</time
+                        ><span
+                          ><strong>მიღება საწყობში</strong><small>DEMO-GR-018 · +12 ც.</small></span
+                        >
+                      </li>
+                    </ol>
+                  </div>
+                  <button
+                    type="button"
+                    class="primary-action full"
+                    (click)="toast.set(item.sku + ' — დემო შევსების მოთხოვნა')"
+                  >
+                    შევსების მოთხოვნა
+                  </button>
+                </aside>
+              }
+            </div>
+          </section>
+        }
+      }
+    </div>
+  </main>
+
+  @if (pendingDecision(); as decision) {
+    <div class="modal-backdrop" (click)="closeDecision()">
+      <section
+        class="decision-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="decision-title"
+        (click)="$event.stopPropagation()"
+      >
+        <span class="modal-symbol">{{ decision.action === 'approve' ? '✓' : '×' }}</span>
+        <p>დემო დადასტურება</p>
+        <h2 id="decision-title">
+          {{ decision.action === 'approve' ? 'გადახდის დამტკიცება?' : 'გადახდის უარყოფა?' }}
+        </h2>
+        <span>{{ decision.id }} · ეს არჩევანი მხოლოდ მიმდინარე დემო სესიაში გამოჩნდება.</span>
+        <div>
+          <button type="button" class="secondary-action" (click)="closeDecision()">გაუქმება</button
+          ><button type="button" class="primary-action" (click)="confirmDecision()">
+            {{ decision.action === 'approve' ? 'დიახ, დამტკიცება' : 'დიახ, უარყოფა' }}
+          </button>
+        </div>
+      </section>
+    </div>
+  }
+
+  @if (toast()) {
+    <button type="button" class="toast" aria-live="polite" (click)="clearToast()">
+      <span>✓</span>{{ toast() }}<b>×</b>
+    </button>
+  }
+</div>

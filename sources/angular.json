@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "cli": {
+    "analytics": false
+  },
+  "projects": {
+    "tyre-demo": {
+      "projectType": "application",
+      "root": "",
+      "sourceRoot": "src",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:application",
+          "options": {
+            "browser": "src/main.ts",
+            "index": "src/index.html",
+            "tsConfig": "tsconfig.json",
+            "styles": [
+              "src/styles.scss"
+            ],
+            "assets": [],
+            "outputPath": {
+              "base": "../docs",
+              "browser": ""
+            },
+            "optimization": true,
+            "sourceMap": false,
+            "outputHashing": "all",
+            "baseHref": "./"
+          }
+        }
+      }
+    }
+  }
+}

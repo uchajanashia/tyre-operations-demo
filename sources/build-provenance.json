@@ -1,0 +1,17 @@
+{
+  "date": "2026-11-15",
+  "source": "tyre.ge admin synthetic demo component",
+  "nodeVersion": "v25.2.1",
+  "npmVersion": "11.6.2",
+  "sourceSha256": {
+    "admin-demo.page.ts": "84291779d937a86f259fbbb216ba3224e7d73081c680b63eb9ce574f8ec5b6b5",
+    "admin-demo.page.html": "285cc48ff777fc414513dd5761633a216909b1f3ce87d6217268d022eea0efa7",
+    "admin-demo.page.scss": "87c5367205e2ed1055eb7e21a3acb8594d91c516ec19632e6161ec1abfdfe0ec"
+  },
+  "lockOrigin": "Started from the original workspace dependency closure, then reconciled with npm install --package-lock-only --ignore-scripts. No dependencies were installed. npm ci --dry-run --ignore-scripts --offline passed.",
+  "lockEntries": 593,
+  "buildCommand": "npm run build",
+  "output": "../docs",
+  "verified": "Production Angular build succeeded; dependency-lock dry run passed. No claim is made about production tyre.ge application readiness.",
+  "audit": "Extracted demo npm audit --omit=dev returned 0 advisories on 2026-11-15. Original full tyre workspace: 16 production advisories; no original dependency remediation performed."
+}
